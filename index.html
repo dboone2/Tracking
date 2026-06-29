@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roof Condition Grid — Display Dashboard</title>
+    <!-- Link to the external Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- APP HEADER -->
+    <header class="app-header">
+        <div class="header-left">
+            <span class="header-icon">🏗️</span>
+            <div>
+                <div class="header-title">Roof Condition Grid — Main Building</div>
+                <div class="header-sub">Dynamic Leak Tracker Database Tool</div>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <!-- TOGGLE REP BUTTON -->
+            <button id="toggleRepBtn" onclick="toggleRepBays()" class="btn-action btn-slate">
+                👁️ Hide Repaired (REP)
+            </button>
+
+            <!-- PRINT BUTTON -->
+            <button onclick="openPrintScreen()" class="btn-action btn-trans">
+                🖨️ Print Grid Layout
+            </button>
+
+            <!-- CLEAR DATA -->
+            <button onclick="clearTrackerState()" class="btn-action btn-trans" style="border-color:#f43f5e; color:#f43f5e;">
+                🗑️ Clear Cached Data
+            </button>
+
+            <!-- IMPORT SPREADSHEET BUTTON -->
+            <button onclick="triggerCSVInput()" class="btn-action btn-blue">
+                📥 Import Leak Tracker (CSV)
+            </button>
+            <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVUpload(this)" style="display:none;">
+        </div>
+    </header>
+
+    <!-- 3-ROW FILTER BAR (WITH INTEGRATED LINK PILL) -->
+    <div class="filter-bar-radios">
+        <div class="filter-row">
+            <span class="filter-row-label">Buildings:</span>
+            <div id="buildingRadioContainer" class="radio-group">
+                <!-- Dynamically populated by JavaScript -->
+            </div>
+        </div>
+        <div class="filter-row">
+            <span class="filter-row-label">Statuses:</span>
+            <div id="statusRadioContainer" class="radio-group">
+                <!-- Dynamically populated by JavaScript -->
+            </div>
+        </div>
+        <div class="filter-row">
+            <span class="filter-row-label">Links:</span>
+            <div class="radio-group">
+                <!-- Hyperlink styled exactly like your interactive radio buttons -->
+                <a href="https://azureford.sharepoint.com/sites/LAP-Facilities/Lists/Roof%20Leak%20Tracker/AllItems.aspx" 
+                   target="_blank" 
+                   class="radio-label link-pill">
+                    <span class="radio-text" style="color: #0288d1; font-weight: 700;">🔗 Open SharePoint Tracker List</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP LAYOUT -->
+    <main class="main-layout">
+        
+        <!-- Left Panel: Grid Visualization Map -->
+        <div class="panel grid-panel">
+            <div class="panel-header">
+                <span>🗺️ Interactive Facility Status Map (Double-click Cell for timeline log)</span>
+            </div>
+            
+            <div class="grid-scroll">
+                <table id="mainGrid"></table>
+            </div>
+        </div>
+
+        <!-- Panel Sidebar Splicer Collapse Toggle Button -->
+        <button class="toggle-btn" id="toggleSummaryBtn" onclick="toggleSummary()" title="Collapse Summary Panel">
+            ◀
+        </button>
+
+        <!-- Right Panel: KPI Statistics & Metrics Panel -->
+        <div class="panel summary-panel">
+            <div class="panel-header">
+                <span>📊 Analytics Panel Summary</span>
+            </div>
+
+            <div class="summary-scroll" style="padding: 16px;">
+                
+                <!-- KPI metrics rows -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <span class="stat-label">Active Leaks</span>
+                        <span id="statActive" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-card" style="border-left: 3px solid #dc2626;">
+                        <span class="stat-label">S3 Critical</span>
+                        <span id="statS3" class="stat-value" style="color:#dc2626;">0</span>
+                    </div>
+                    <div class="stat-card" style="border-left: 3px solid #10b981;">
+                        <span class="stat-label">Repaired</span>
+                        <span id="statRepaired" class="stat-value" style="color:#10b981;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total Logs</span>
+                        <span id="statTotalRecords" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <!-- Summary Status Table -->
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryBody"></tbody>
+                    <tfoot>
+                        <tr class="grand-row">
+                            <td colspan="2" style="text-align:left;">GRID TOTAL TARGET COORDS</td>
+                            <td class="count-cell" id="grandTotal">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- HISTORICAL TIMELINE VIEW MODAL -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="historyModalTitle">📋 Complete Historical Logs</h2>
+                <button onclick="closeHistoryModal()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>🕰️ Chronological Timeline (Newest Reports First)</h3>
+                <div id="historyLog"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CELL HOVER TOOLTIP -->
+    <div id="customTooltip"></div>
+
+    <!-- IMPORT TOAST NOTIFICATION -->
+    <div class="import-toast" id="importToast">
+        <div class="toast-title">✅ Spreadsheet Database Loaded</div>
+        <span id="importToastMsg"></span>
+    </div>
+
+    <!-- Link to the Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

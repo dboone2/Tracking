@@ -1,0 +1,958 @@
+/* =================================================================
+   CORE APP LAYOUT
+   ================================================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef1f6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* APP HEADER */
+.app-header {
+    background: linear-gradient(135deg, #00529b 0%, #002f5f 100%);
+    color: white;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.header-icon {
+    font-size: 30px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.header-sub {
+    font-size: 12px;
+    opacity: 0.72;
+    margin-top: 3px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* HEADER ACTION BUTTONS */
+.btn-action {
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-orange { background: #e65100; border: 2px solid #b26a00; }
+.btn-orange:hover { background: #b26a00; }
+
+.btn-slate { background: #37474f; border: 2px solid #263238; }
+.btn-slate:hover { background: #263238; }
+
+.btn-trans { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.4); }
+.btn-trans:hover { background: rgba(255,255,255,0.28); }
+
+.btn-green { background: #00796b; border: 2px solid #004d40; }
+.btn-green:hover { background: #00695c; }
+
+.btn-blue { background: #0288d1; border: 2px solid #01579b; }
+.btn-blue:hover { background: #0277bd; }
+
+/* MAIN LAYOUT */
+.main-layout {
+    display: flex;
+    gap: 18px;
+    padding: 20px 24px;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+/* PANELS */
+.panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 110px);
+}
+
+.panel-header {
+    background: #f4f6fa;
+    border-bottom: 2px solid #e3e8ef;
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #667;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+/* DASHBOARD STATS ROW */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.stat-card {
+    background: #f8fafc;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-top: 4px;
+}
+
+/* =================================================================
+   MULTI-ROW FILTER BAR
+   ================================================================= */
+.filter-bar-radios {
+    background: #1e293b;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 24px 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.filter-row-label {
+    font-weight: 700;
+    color: #94a3b8;
+    min-width: 90px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #0f172a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    position: relative;
+}
+
+.radio-label:hover {
+    border-color: #64748b;
+    background: #1e293b;
+}
+
+/* Hide native browser radio buttons for a custom pill toggle experience */
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #cbd5e1;
+    transition: color 0.2s;
+}
+
+/* Status Pill Text Markers inside the Filter Row */
+.radio-label .status-pill-text {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 11px;
+    color: #ffffff;
+    display: inline-block;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* Default dynamic transparent borders for inactive filter pills */
+.radio-label .status-pill-text.status-S1  { background-color: rgba(250, 204, 21, 0.15);  color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+.radio-label .status-pill-text.status-S2  { background-color: rgba(249, 115, 22, 0.15);  color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
+.radio-label .status-pill-text.status-S3  { background-color: rgba(239, 68, 68, 0.15);   color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+.radio-label .status-pill-text.status-REP { background-color: rgba(34, 197, 94, 0.15);   color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+
+/* --- ACTIVE/CHECKED PILL STATES USING CSS :HAS --- */
+/* Standard Checked Style (for Buildings, All Statuses) */
+.radio-label:has(input[type="radio"]:checked) {
+    background: #0288d1;
+    border-color: #03a9f4;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(2, 136, 209, 0.45);
+}
+
+.radio-label:has(input[type="radio"]:checked) .radio-text {
+    color: #ffffff;
+}
+
+/* Custom Highlight State for active Severity Filters */
+.radio-label:has(input[value="S1"]:checked) {
+    background: #facc15;
+    border-color: #facc15;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+}
+.radio-label:has(input[value="S1"]:checked) .status-pill-text.status-S1 {
+    background-color: #000000;
+    color: #facc15;
+    border-color: #000000;
+}
+
+.radio-label:has(input[value="S2"]:checked) {
+    background: #f97316;
+    border-color: #f97316;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+}
+.radio-label:has(input[value="S2"]:checked) .status-pill-text.status-S2 {
+    background-color: #ffffff;
+    color: #f97316;
+    border-color: #ffffff;
+}
+
+.radio-label:has(input[value="S3"]:checked) {
+    background: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+.radio-label:has(input[value="S3"]:checked) .status-pill-text.status-S3 {
+    background-color: #ffffff;
+    color: #ef4444;
+    border-color: #ffffff;
+}
+
+.radio-label:has(input[value="REP"]:checked) {
+    background: #22c55e;
+    border-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+.radio-label:has(input[value="REP"]:checked) .status-pill-text.status-REP {
+    background-color: #ffffff;
+    color: #22c55e;
+    border-color: #ffffff;
+}
+
+.radio-label:has(input[value="Unspecified"]:checked) {
+    background: #64748b;
+    border-color: #94a3b8;
+    box-shadow: 0 0 10px rgba(100, 116, 139, 0.4);
+}
+
+/* SharePoint Link Pill custom style matching radio pills */
+.radio-label.link-pill {
+    text-decoration: none;
+    background: rgba(2, 136, 209, 0.1);
+    border-color: #0288d1;
+    display: inline-flex;
+    align-items: center;
+}
+
+.radio-label.link-pill:hover {
+    background: #0288d1;
+    border-color: #03a9f4;
+    box-shadow: 0 0 10px rgba(2, 136, 209, 0.45);
+}
+
+.radio-label.link-pill:hover .radio-text {
+    color: #ffffff;
+}
+
+/* =================================================================
+   ROOF GRID DESIGN
+   ================================================================= */
+.grid-panel {
+    flex: 1;
+    min-width: 0;
+}
+
+.grid-scroll {
+    overflow: auto;
+    flex: 1;
+}
+
+table {
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #dde3ec;
+    padding: 2px;
+    text-align: center;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
+    height: 48px;
+    position: relative;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: #2d4a6e;
+    color: white;
+    z-index: 2;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.row-label {
+    position: sticky;
+    left: 0;
+    background: #2d4a6e;
+    color: white;
+    z-index: 2;
+    font-weight: 700;
+    width: 40px;
+    min-width: 40px;
+    font-size: 11px;
+}
+
+th:first-child {
+    z-index: 3;
+    background: #1e3552;
+}
+
+tr:nth-child(even) td:not(.row-label) {
+    background-color: rgba(0,0,0,0.014);
+}
+
+/* CELL STYLING */
+.grid-cell {
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    user-select: none;
+}
+
+.grid-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+/* =================================================================
+   HIGH-CONTRAST SEVERITY BLOCK FILLS
+   ================================================================= */
+.status-     { background-color: #ffffff; color: transparent; }
+.status-S1   { background-color: #ffd600; color: #000000; } /* Yellow (Aisleway) */
+.status-S2   { background-color: #ff9800; color: #000000; } /* Orange (Equipment) */
+.status-S3   { background-color: #d32f2f; color: #ffffff; } /* Red (Electrical / Immediate) */
+.status-REP  { background-color: #2e7d32; color: #ffffff; } /* Green (Repaired) */
+
+/* Comment indicator dots */
+.has-comments::after {
+    content: '💬';
+    font-size: 8px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+/* Adjust comment icon for high-contrast on darker blocks */
+.status-S3.has-comments::after,
+.status-REP.has-comments::after {
+    filter: brightness(0) invert(1);
+}
+
+/* Hide Repaired (REP) toggle mode */
+.hide-rep td.status-REP {
+    background-color: #ffffff !important;
+    color: transparent !important;
+}
+
+.hide-rep td.status-REP::after {
+    display: none !important;
+}
+
+/* =================================================================
+   SUMMARY PANEL
+   ================================================================= */
+.summary-panel {
+    width: 440px;
+    flex-shrink: 0;
+    transition: width 0.3s ease, opacity 0.3s ease, min-width 0.3s ease;
+}
+
+.summary-panel.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.summary-scroll {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.summary-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.summary-table thead th {
+    background: #00529b;
+    color: white;
+    font-size: 11px;
+    padding: 12px 8px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.summary-table tbody tr {
+    transition: background 0.15s;
+}
+
+.summary-table tbody tr:hover td {
+    background-color: #f0f6ff !important;
+}
+
+.summary-table td {
+    padding: 10px 12px;
+    border: 1px solid #eaecf0;
+    vertical-align: middle;
+}
+
+.code-cell {
+    text-align: center;
+    width: 60px;
+}
+
+.code-pill {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.desc-cell {
+    font-size: 12px;
+    font-weight: 600;
+    color: #222;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.desc-sub {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 3px;
+    display: block;
+}
+
+.count-cell {
+    text-align: center;
+    width: 60px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #00529b;
+}
+
+tfoot .grand-row td {
+    background: #1e3552;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 12px;
+}
+
+tfoot .grand-row .count-cell {
+    color: #64b5f6;
+    font-size: 18px;
+}
+
+/* COLLAPSE/EXPAND SIDER TOGGLE */
+.toggle-btn {
+    background: #2d4a6e;
+    color: white;
+    border: 2px solid #4a6a8e;
+    border-radius: 8px;
+    padding: 8px 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    align-self: center;
+    flex-shrink: 0;
+    height: 80px;
+    writing-mode: vertical-rl;
+    transition: background 0.2s;
+    line-height: 1;
+}
+
+.toggle-btn:hover {
+    background: #3d5a7e;
+}
+
+/* =================================================================
+   UI MODALS & FLOATING LABELS
+   ================================================================= */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10,20,40,0.72);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 12px;
+    width: 650px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #00529b, #003366);
+    color: white;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 20px 22px;
+    overflow-y: auto;
+    flex-grow: 1;
+    background: #f8fafc;
+}
+
+.modal-body h3 {
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    font-weight: 700;
+}
+
+/* CELL HOVER TOOLTIP */
+#customTooltip {
+    position: absolute;
+    display: none;
+    background: rgba(15,23,42,0.95);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 9999;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    line-height: 1.5;
+    border: 1px solid rgba(255,255,255,0.15);
+    max-width: 320px;
+}
+
+/* =================================================================
+   HISTORY ENTRIES & CHRONOLOGY TIMELINE
+   ================================================================= */
+.history-entry {
+    background: #fff;
+    border-left: 4px solid #00529b;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+    border-top: 1px solid #f1f5f9;
+    border-right: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.history-entry.status-S3 { border-left-color: #d32f2f; }
+.history-entry.status-S2 { border-left-color: #ff9800; }
+.history-entry.status-S1 { border-left-color: #ffd600; }
+.history-entry.status-REP { border-left-color: #2e7d32; }
+
+.he-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.he-reported-by {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.he-building {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.he-status-badge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+.he-comment {
+    font-size: 13px;
+    color: #334155;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    margin-top: 8px;
+    background: #f8fafc;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px dashed #e2e8f0;
+}
+
+.no-history {
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    padding: 32px 0;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =================================================================
+   IMPORT TOAST NOTIFICATION
+   ================================================================= */
+.import-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 99998;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    display: none;
+    max-width: 360px;
+    line-height: 1.5;
+    animation: toastSlide 0.4s ease;
+}
+
+.import-toast .toast-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+@keyframes toastSlide {
+    from { transform: translateX(120px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+}
+
+/* =================================================================
+   🛠️ ADVANCED PRINT MEDIA ENGINE (STRETCHED LANDSCAPE LAYOUT)
+   ================================================================= */
+@media print {
+    @page {
+        size: landscape;
+        margin: 0.2in;
+    }
+
+    body {
+        background: white !important;
+        color: #000000 !important;
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .main-layout {
+        display: flex !important;
+        flex-direction: column !important; /* Stack Legend beneath Grid map */
+        align-items: stretch !important;
+        width: 100% !important;
+        padding: 0 !important;
+        gap: 20px !important; /* Breathing room between map and legend */
+        height: auto !important;
+    }
+
+    .grid-panel {
+        flex: none !important;
+        width: 100% !important; /* Expand Grid to full width */
+        max-width: 100% !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        overflow: visible !important;
+        page-break-after: avoid; /* Prevent separating grid header and rows */
+    }
+
+    .grid-scroll {
+        overflow: visible !important;
+    }
+
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    /* Grid Map Cells Custom Printing Sizing */
+    th, td {
+        width: 15px !important;
+        min-width: 15px !important;
+        max-width: 15px !important;
+        height: 15px !important;
+        padding: 0 !important;
+        font-size: 6px !important;
+    }
+
+    tr:nth-child(even) td:not(.row-label) {
+        background-color: transparent !important;
+    }
+
+    td:not([class*="status-"]) {
+        border: 0.5px solid #e2e8f0 !important;
+    }
+
+    .grid-cell {
+        color: transparent !important;
+        border: 0.5px solid #64748b !important;
+    }
+
+    .row-label {
+        width: 18px !important;
+        min-width: 18px !important;
+        max-width: 18px !important;
+        font-size: 7px !important;
+        font-weight: 800 !important;
+        background: #2d4a6e !important;
+        color: white !important;
+        border: 0.5px solid #1e3552 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* COLUMN HEADER ROW NUMBERS (BOLDER & EASIER TO READ) */
+    th {
+        font-size: 7px !important;       /* Increased from 5px for high visibility */
+        font-weight: 900 !important;     /* Heavy-weight bolding to prevent faint prints */
+        height: 15px !important;
+        background: #1e3552 !important;  /* Deeper navy background to make the white text pop */
+        color: #ffffff !important;
+        border: 0.5px solid #0f172a !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .status-S1  { background-color: #ffd600 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-S2  { background-color: #ff9800 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-S3  { background-color: #d32f2f !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-REP { background-color: #2e7d32 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    .has-comments::after {
+        display: none !important;
+    }
+
+    /* LEGEND AND SUMMARY DETAILS PANEL (STRETCHED BELOW GRID) */
+    .summary-panel {
+        display: flex !important;
+        width: 100% !important; /* Span full page width */
+        min-width: 100% !important;
+        max-width: 100% !important;
+        opacity: 1 !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+        page-break-inside: avoid; /* Ensure legend doesn't awkwardly snap splits */
+    }
+
+    .summary-scroll {
+        overflow: visible !important;
+        padding: 12px !important;
+        width: 100% !important;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(4, 1fr) !important; /* Stretch cards side-by-side horizontally */
+        gap: 12px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .stat-card {
+        padding: 8px 12px !important;
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .stat-label { font-size: 9px !important; }
+    .stat-value { font-size: 16px !important; margin-top: 4px !important; }
+
+    /* Fix to prevent standard small grid cell overrides from breaking the legend table */
+    .summary-table { 
+        font-size: 10px !important; 
+        width: 100% !important;
+    }
+
+    .summary-table thead th {
+        padding: 8px 6px !important;
+        background: #00529b !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .summary-table th, 
+    .summary-table td { 
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        padding: 8px 10px !important; 
+    }
+
+    .code-cell {
+        width: 70px !important;
+        min-width: 70px !important;
+    }
+
+    .count-cell {
+        width: 70px !important;
+        min-width: 70px !important;
+        font-size: 13px !important;
+    }
+
+    .code-pill {
+        font-size: 9px !important;
+        padding: 4px 6px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .desc-cell { font-size: 11px !important; }
+    .desc-sub { font-size: 9px !important; margin-top: 2px !important; }
+
+    tfoot .grand-row td {
+        padding: 10px 12px !important;
+        background: #1e3552 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Hide clutter web controls */
+    .app-header, 
+    .filter-bar-radios, 
+    .modal-overlay, 
+    .toggle-btn, 
+    #customTooltip,
+    .import-toast {
+        display: none !important;
+    }
+}

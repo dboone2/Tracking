@@ -6,6 +6,103 @@
     <title>Roof Condition Grid — Display Dashboard</title>
     <!-- Link to the external Style Sheet -->
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ── COMPASS ─────────────────────────────────────── */
+        .compass-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .compass {
+            position: relative;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #1e293b 60%, #0f172a);
+            border: 2px solid #334155;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5), inset 0 0 6px rgba(0,0,0,0.4);
+            flex-shrink: 0;
+        }
+
+        /* Cardinal labels */
+        .compass .cardinal {
+            position: absolute;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            color: #94a3b8;
+        }
+        .compass .cardinal.N {
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ef4444; /* red North */
+            font-size: 10px;
+        }
+        .compass .cardinal.S { bottom: 3px; left: 50%; transform: translateX(-50%); }
+        .compass .cardinal.E { right: 3px; top: 50%; transform: translateY(-50%); }
+        .compass .cardinal.W { left: 3px; top: 50%; transform: translateY(-50%); }
+
+        /* Needle */
+        .compass .needle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            transform: translate(-50%, -50%);
+        }
+        /* North half — red */
+        .compass .needle::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 16px solid #ef4444;
+            margin-left: -2px;
+            margin-bottom: 1px;
+        }
+        /* South half — white */
+        .compass .needle::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 16px solid #e2e8f0;
+            margin-left: -2px;
+        }
+
+        /* Center dot */
+        .compass .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background: #f8fafc;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 3px rgba(0,0,0,0.6);
+        }
+
+        /* Tick marks */
+        .compass .tick {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 5px;
+            background: #475569;
+            transform-origin: top center;
+        }
+    </style>
 </head>
 <body>
 
@@ -75,8 +172,27 @@
         
         <!-- Left Panel: Grid Visualization Map -->
         <div class="panel grid-panel">
-            <div class="panel-header">
+            <div class="panel-header" style="display:flex; align-items:center; justify-content:space-between;">
                 <span>🗺️ Interactive Facility Status Map (Double-click Cell for timeline log)</span>
+
+                <!-- ── COMPASS ── -->
+                <div class="compass-wrap">
+                    <div style="text-align:right; line-height:1.3;">
+                        <div style="font-size:10px; color:#94a3b8; font-weight:600;">ORIENTATION</div>
+                        <div style="font-size:9px; color:#64748b;">North ↑ Up</div>
+                    </div>
+                    <div class="compass" title="North is Up">
+                        <!-- Cardinal directions -->
+                        <span class="cardinal N">N</span>
+                        <span class="cardinal S">S</span>
+                        <span class="cardinal E">E</span>
+                        <span class="cardinal W">W</span>
+                        <!-- Needle -->
+                        <div class="needle"></div>
+                        <!-- Center pivot dot -->
+                        <div class="center-dot"></div>
+                    </div>
+                </div>
             </div>
             
             <div class="grid-scroll">

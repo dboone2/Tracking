@@ -10,7 +10,7 @@ const statuses = [
 
 // Cleaned Rows: Removed 'A/B', 'B-C', 'CC', 'G-J', and 'JN'
 const customRows = [
-    'AA','A','B','C','D','E','F',
+    'CC','BB','AA','A','B','C','D','E','F',
     'G','H','J','K','L','M','N','P','Q','R','S'
 ];
 

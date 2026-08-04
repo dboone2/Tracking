@@ -1,12 +1,12 @@
 // =================================================================
-// 1. DATA DICTIONARIES & CONSTANTS (4-Tier Active + Repaired)
+// 1. DATA DICTIONARIES & CONSTANTS (3-Tier Active + Repaired)
 // =================================================================
 const statuses = [
-    { value:'S1',   label:'S1',   cssClass:'S1',   description:'Severity 1 â€” Water in Aisleway', sub:'Water present in forklift traffic or pedestrian lanes.' },
+    { value:'S1',   label:'S1',   cssClass:'S1',   description:'Severity 1 â€” Water in Aisleway',  sub:'Water present in forklift traffic or pedestrian lanes.' },
     { value:'S2',   label:'S2',   cssClass:'S2',   description:'Severity 2 â€” Water on Equipment', sub:'Water contacting production machinery, lines, or facility systems.' },
     { value:'S3',   label:'S3',   cssClass:'S3',   description:'Severity 3 â€” Water on Electrical / Address Immediately', sub:'Immediate hazard. Water on power boxes, bus bars, control panels, or exposed wiring.' },
     { value:'MECH', label:'MECH', cssClass:'MECH', description:'Mechanical â€” Mechanical Issue / Equipment Leak', sub:'Water leak related to mechanical systems, piping, HVAC, or equipment.' },
-    { value:'REP',  label:'REP',  cssClass:'REP',  description:'Repaired â€” Leak Resolved', sub:'Roof leak repair is completed and signed off.' }
+    { value:'REP',  label:'REP',  cssClass:'REP',  description:'Repaired â€” Leak Resolved',          sub:'Roof leak repair is completed and signed off.' }
 ];
 
 // Cleaned Rows: Removed 'A/B', 'B-C', 'CC', 'G-J', and 'JN'
@@ -443,10 +443,10 @@ function drawVisualizationGrid() {
                     inlineStyle += ' background-color: #f97316 !important; color: #ffffff !important;';
                 } else if (cleanStatusLabel === 'S3') {
                     inlineStyle += ' background-color: #ef4444 !important; color: #ffffff !important;';
-                } else if (cleanStatusLabel === 'MECH') {
-                    inlineStyle += ' background-color: #9333ea !important; color: #ffffff !important;';
                 } else if (cleanStatusLabel === 'REP') {
                     inlineStyle += ' background-color: #22c55e !important; color: #ffffff !important;';
+                } else if (cleanStatusLabel === 'MECH') {
+                    inlineStyle += ' background-color: #9333ea !important; color: #ffffff !important;';
                 }
             }
 
@@ -491,9 +491,6 @@ function updateDashboardMetrics() {
 
     document.getElementById('statActive').innerText = grandTotalActive;
     document.getElementById('statS3').innerText = counts['S3'];
-    if (document.getElementById('statMech')) {
-        document.getElementById('statMech').innerText = counts['MECH'];
-    }
     document.getElementById('statRepaired').innerText = counts['REP'];
     document.getElementById('statTotalRecords').innerText = fullRecords.length;
 
@@ -534,12 +531,12 @@ function viewBayHistoryModal(key) {
     if (logs.length === 0) {
         container.innerHTML = '<p class="no-history">No leak reports are currently registered for this coordinate on the spreadsheet.</p>';
     } else {
-        let html = '';
+                let html = '';
         [...logs].reverse().forEach(log => {
 
             const cleanStatus = (log.derivedStatus || '').toUpperCase();
             html += `
-                <div class="history-entry status-${cleanStatus}">
+                <div class="history-entry">
                     <div class="he-meta-row">
                         <span class="code-pill status-${cleanStatus}">${cleanStatus}</span>
                         <span class="he-date">${log.date}</span>

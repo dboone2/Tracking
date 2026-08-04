@@ -491,6 +491,7 @@ function updateDashboardMetrics() {
 
     document.getElementById('statActive').innerText = grandTotalActive;
     document.getElementById('statS3').innerText = counts['S3'];
+    document.getElementById('statMech').innerText = counts['MECH']; // FIX: statMech box was never being updated, so it stayed stuck at 0
     document.getElementById('statRepaired').innerText = counts['REP'];
     document.getElementById('statTotalRecords').innerText = fullRecords.length;
 

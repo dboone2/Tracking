@@ -1,11 +1,12 @@
 // =================================================================
-// 1. DATA DICTIONARIES & CONSTANTS (3-Tier Active + Repaired)
+// 1. DATA DICTIONARIES & CONSTANTS (4-Tier Active + Repaired)
 // =================================================================
 const statuses = [
-    { value:'S1',  label:'S1',  cssClass:'S1',  description:'Severity 1 — Water in Aisleway',  sub:'Water present in forklift traffic or pedestrian lanes.' },
-    { value:'S2',  label:'S2',  cssClass:'S2',  description:'Severity 2 — Water on Equipment', sub:'Water contacting production machinery, lines, or facility systems.' },
-    { value:'S3',  label:'S3',  cssClass:'S3',  description:'Severity 3 — Water on Electrical / Address Immediately', sub:'Immediate hazard. Water on power boxes, bus bars, control panels, or exposed wiring.' },
-    { value:'REP', label:'REP', cssClass:'REP', description:'Repaired — Leak Resolved',          sub:'Roof leak repair is completed and signed off.' }
+    { value:'S1',   label:'S1',   cssClass:'S1',   description:'Severity 1 â€” Water in Aisleway', sub:'Water present in forklift traffic or pedestrian lanes.' },
+    { value:'S2',   label:'S2',   cssClass:'S2',   description:'Severity 2 â€” Water on Equipment', sub:'Water contacting production machinery, lines, or facility systems.' },
+    { value:'S3',   label:'S3',   cssClass:'S3',   description:'Severity 3 â€” Water on Electrical / Address Immediately', sub:'Immediate hazard. Water on power boxes, bus bars, control panels, or exposed wiring.' },
+    { value:'MECH', label:'MECH', cssClass:'MECH', description:'Mechanical â€” Mechanical Issue / Equipment Leak', sub:'Water leak related to mechanical systems, piping, HVAC, or equipment.' },
+    { value:'REP',  label:'REP',  cssClass:'REP',  description:'Repaired â€” Leak Resolved', sub:'Roof leak repair is completed and signed off.' }
 ];
 
 // Cleaned Rows: Removed 'A/B', 'B-C', 'CC', 'G-J', and 'JN'
@@ -269,6 +270,8 @@ function importCSVDatabase(rawCsvString) {
                 derivedStatus = 'S2';
             } else if (cleanSev === 'S3' || cleanSev === 'S4' || cleanSev === 'S5') {
                 derivedStatus = 'S3'; 
+            } else if (cleanSev === 'MECH' || cleanSev === 'MECHANICAL') {
+                derivedStatus = 'MECH';
             }
         }
 
@@ -440,6 +443,8 @@ function drawVisualizationGrid() {
                     inlineStyle += ' background-color: #f97316 !important; color: #ffffff !important;';
                 } else if (cleanStatusLabel === 'S3') {
                     inlineStyle += ' background-color: #ef4444 !important; color: #ffffff !important;';
+                } else if (cleanStatusLabel === 'MECH') {
+                    inlineStyle += ' background-color: #9333ea !important; color: #ffffff !important;';
                 } else if (cleanStatusLabel === 'REP') {
                     inlineStyle += ' background-color: #22c55e !important; color: #ffffff !important;';
                 }
@@ -471,7 +476,7 @@ function drawVisualizationGrid() {
 // 8. DASHBOARD METRICS SUMMARY COUNTS
 // =================================================================
 function updateDashboardMetrics() {
-    const counts = { 'S1':0, 'S2':0, 'S3':0, 'REP':0 };
+    const counts = { 'S1':0, 'S2':0, 'S3':0, 'MECH':0, 'REP':0 };
     let grandTotalActive = 0;
 
     Object.keys(gridData).forEach(key => {
@@ -486,6 +491,9 @@ function updateDashboardMetrics() {
 
     document.getElementById('statActive').innerText = grandTotalActive;
     document.getElementById('statS3').innerText = counts['S3'];
+    if (document.getElementById('statMech')) {
+        document.getElementById('statMech').innerText = counts['MECH'];
+    }
     document.getElementById('statRepaired').innerText = counts['REP'];
     document.getElementById('statTotalRecords').innerText = fullRecords.length;
 
@@ -520,18 +528,18 @@ function viewBayHistoryModal(key) {
     const logs = bayHistory[key] || [];
     const modal = document.getElementById('historyModal');
     
-    document.getElementById('historyModalTitle').innerText = `📋 Complete Historical Logs for Bay ${key}`;
+    document.getElementById('historyModalTitle').innerText = `ðŸ“‹ Complete Historical Logs for Bay ${key}`;
     const container = document.getElementById('historyLog');
 
     if (logs.length === 0) {
         container.innerHTML = '<p class="no-history">No leak reports are currently registered for this coordinate on the spreadsheet.</p>';
     } else {
-                let html = '';
+        let html = '';
         [...logs].reverse().forEach(log => {
 
             const cleanStatus = (log.derivedStatus || '').toUpperCase();
             html += `
-                <div class="history-entry">
+                <div class="history-entry status-${cleanStatus}">
                     <div class="he-meta-row">
                         <span class="code-pill status-${cleanStatus}">${cleanStatus}</span>
                         <span class="he-date">${log.date}</span>
@@ -572,7 +580,7 @@ function toggleSummary() {
         panel.classList.toggle('collapsed');
         if (btn) {
             const isCollapsed = panel.classList.contains('collapsed');
-            btn.innerText = isCollapsed ? '▶' : '◀';
+            btn.innerText = isCollapsed ? 'â–¶' : 'â—€';
             btn.title = isCollapsed ? 'Expand Summary Panel' : 'Collapse Summary Panel';
         }
     }
@@ -602,7 +610,7 @@ function setupTooltipHoverEngine() {
         const latest = logs[logs.length - 1];
         tooltip.innerHTML = `
             <strong>${key}</strong><br>
-            ${latest.building} — ${latest.date}<br>
+            ${latest.building} â€” ${latest.date}<br>
             ${latest.notes || ''}
         `;
         tooltip.style.display = 'block';
@@ -622,4 +630,3 @@ function setupTooltipHoverEngine() {
         }
     });
 }
-

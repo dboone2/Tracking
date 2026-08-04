@@ -125,8 +125,8 @@ body {
 /* DASHBOARD STATS ROW */
 .stats-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
     margin-bottom: 14px;
 }
 
@@ -134,7 +134,7 @@ body {
     background: #f8fafc;
     border: 1px solid #dde3ec;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
 }
@@ -237,10 +237,11 @@ body {
 }
 
 /* Default dynamic transparent borders for inactive filter pills */
-.radio-label .status-pill-text.status-S1  { background-color: rgba(250, 204, 21, 0.15);  color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
-.radio-label .status-pill-text.status-S2  { background-color: rgba(249, 115, 22, 0.15);  color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
-.radio-label .status-pill-text.status-S3  { background-color: rgba(239, 68, 68, 0.15);   color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
-.radio-label .status-pill-text.status-REP { background-color: rgba(34, 197, 94, 0.15);   color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+.radio-label .status-pill-text.status-S1   { background-color: rgba(250, 204, 21, 0.15);  color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+.radio-label .status-pill-text.status-S2   { background-color: rgba(249, 115, 22, 0.15);  color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
+.radio-label .status-pill-text.status-S3   { background-color: rgba(239, 68, 68, 0.15);   color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+.radio-label .status-pill-text.status-MECH { background-color: rgba(147, 51, 234, 0.15);  color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3); }
+.radio-label .status-pill-text.status-REP  { background-color: rgba(34, 197, 94, 0.15);   color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
 
 /* --- ACTIVE/CHECKED PILL STATES USING CSS :HAS --- */
 /* Standard Checked Style (for Buildings, All Statuses) */
@@ -286,6 +287,17 @@ body {
 .radio-label:has(input[value="S3"]:checked) .status-pill-text.status-S3 {
     background-color: #ffffff;
     color: #ef4444;
+    border-color: #ffffff;
+}
+
+.radio-label:has(input[value="MECH"]:checked) {
+    background: #9333ea;
+    border-color: #9333ea;
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+}
+.radio-label:has(input[value="MECH"]:checked) .status-pill-text.status-MECH {
+    background-color: #ffffff;
+    color: #9333ea;
     border-color: #ffffff;
 }
 
@@ -407,11 +419,12 @@ tr:nth-child(even) td:not(.row-label) {
 .status-S1   { background-color: #ffd600; color: #000000; } /* Yellow (Aisleway) */
 .status-S2   { background-color: #ff9800; color: #000000; } /* Orange (Equipment) */
 .status-S3   { background-color: #d32f2f; color: #ffffff; } /* Red (Electrical / Immediate) */
+.status-MECH { background-color: #9333ea; color: #ffffff; } /* Purple (Mechanical Issue) */
 .status-REP  { background-color: #2e7d32; color: #ffffff; } /* Green (Repaired) */
 
 /* Comment indicator dots */
 .has-comments::after {
-    content: '💬';
+    content: 'ðŸ’¬';
     font-size: 8px;
     position: absolute;
     top: 2px;
@@ -420,6 +433,7 @@ tr:nth-child(even) td:not(.row-label) {
 
 /* Adjust comment icon for high-contrast on darker blocks */
 .status-S3.has-comments::after,
+.status-MECH.has-comments::after,
 .status-REP.has-comments::after {
     filter: brightness(0) invert(1);
 }
@@ -498,6 +512,12 @@ tr:nth-child(even) td:not(.row-label) {
     display: inline-block;
     border: 1px solid rgba(0,0,0,0.1);
 }
+
+.code-pill.status-S1   { background-color: #ffd600; color: #000; }
+.code-pill.status-S2   { background-color: #ff9800; color: #fff; }
+.code-pill.status-S3   { background-color: #d32f2f; color: #fff; }
+.code-pill.status-MECH { background-color: #9333ea; color: #fff; }
+.code-pill.status-REP  { background-color: #2e7d32; color: #fff; }
 
 .desc-cell {
     font-size: 12px;
@@ -666,10 +686,11 @@ tfoot .grand-row .count-cell {
     border-bottom: 1px solid #f1f5f9;
 }
 
-.history-entry.status-S3 { border-left-color: #d32f2f; }
-.history-entry.status-S2 { border-left-color: #ff9800; }
-.history-entry.status-S1 { border-left-color: #ffd600; }
-.history-entry.status-REP { border-left-color: #2e7d32; }
+.history-entry.status-S3   { border-left-color: #d32f2f; }
+.history-entry.status-S2   { border-left-color: #ff9800; }
+.history-entry.status-S1   { border-left-color: #ffd600; }
+.history-entry.status-MECH { border-left-color: #9333ea; }
+.history-entry.status-REP  { border-left-color: #2e7d32; }
 
 .he-meta-row {
     display: flex;
@@ -755,7 +776,7 @@ tfoot .grand-row .count-cell {
 }
 
 /* =================================================================
-   🛠️ ADVANCED PRINT MEDIA ENGINE (STRETCHED LANDSCAPE LAYOUT)
+   ðŸ› ï¸ ADVANCED PRINT MEDIA ENGINE (STRETCHED LANDSCAPE LAYOUT)
    ================================================================= */
 @media print {
     @page {
@@ -849,10 +870,11 @@ tfoot .grand-row .count-cell {
         print-color-adjust: exact !important;
     }
 
-    .status-S1  { background-color: #ffd600 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .status-S2  { background-color: #ff9800 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .status-S3  { background-color: #d32f2f !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .status-REP { background-color: #2e7d32 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-S1   { background-color: #ffd600 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-S2   { background-color: #ff9800 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-S3   { background-color: #d32f2f !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-MECH { background-color: #9333ea !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .status-REP  { background-color: #2e7d32 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
     .has-comments::after {
         display: none !important;
@@ -880,21 +902,21 @@ tfoot .grand-row .count-cell {
     }
 
     .stats-row {
-        grid-template-columns: repeat(4, 1fr) !important; /* Stretch cards side-by-side horizontally */
-        gap: 12px !important;
+        grid-template-columns: repeat(5, 1fr) !important; /* Stretch cards side-by-side horizontally */
+        gap: 10px !important;
         margin-bottom: 14px !important;
     }
 
     .stat-card {
-        padding: 8px 12px !important;
+        padding: 8px 10px !important;
         background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
-    .stat-label { font-size: 9px !important; }
-    .stat-value { font-size: 16px !important; margin-top: 4px !important; }
+    .stat-label { font-size: 8px !important; }
+    .stat-value { font-size: 15px !important; margin-top: 4px !important; }
 
     /* Fix to prevent standard small grid cell overrides from breaking the legend table */
     .summary-table { 

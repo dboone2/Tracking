@@ -109,7 +109,7 @@
     <!-- APP HEADER -->
     <header class="app-header">
         <div class="header-left">
-            <span class="header-icon">🏗️</span>
+            
             <div>
                 <div class="header-title">Roof Condition Grid — Main Building</div>
                 <div class="header-sub">Dynamic Leak Tracker Database Tool</div>
@@ -119,22 +119,22 @@
         <div class="header-right">
             <!-- TOGGLE REP BUTTON -->
             <button id="toggleRepBtn" onclick="toggleRepBays()" class="btn-action btn-slate">
-                👁️ Hide Repaired (REP)
+                Hide Repaired (REP)
             </button>
 
             <!-- PRINT BUTTON -->
             <button onclick="openPrintScreen()" class="btn-action btn-trans">
-                🖨️ Print Grid Layout
+                Print Grid Layout
             </button>
 
             <!-- CLEAR DATA -->
             <button onclick="clearTrackerState()" class="btn-action btn-trans" style="border-color:#f43f5e; color:#f43f5e;">
-                🗑️ Clear Cached Data
+                Clear Cached Data
             </button>
 
             <!-- IMPORT SPREADSHEET BUTTON -->
             <button onclick="triggerCSVInput()" class="btn-action btn-blue">
-                📥 Import Leak Tracker (CSV)
+                Import Leak Tracker (CSV)
             </button>
             <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVUpload(this)" style="display:none;">
         </div>
@@ -161,7 +161,7 @@
                 <a href="https://azureford.sharepoint.com/sites/LAP-Facilities/Lists/Roof%20Leak%20Tracker/AllItems.aspx" 
                    target="_blank" 
                    class="radio-label link-pill">
-                    <span class="radio-text" style="color: #0288d1; font-weight: 700;">🔗 Open SharePoint Tracker List</span>
+                    <span class="radio-text" style="color: #0288d1; font-weight: 700;">Open SharePoint Tracker List</span>
                 </a>
             </div>
         </div>
@@ -173,13 +173,13 @@
         <!-- Left Panel: Grid Visualization Map -->
         <div class="panel grid-panel">
             <div class="panel-header" style="display:flex; align-items:center; justify-content:space-between;">
-                <span>🗺️ Interactive Facility Status Map (Double-click Cell for timeline log)</span>
+                <span>Interactive Facility Status Map (Double-click Cell for timeline log)</span>
 
                 <!-- ── COMPASS ── -->
                 <div class="compass-wrap">
                     <div style="text-align:right; line-height:1.3;">
                         <div style="font-size:10px; color:#94a3b8; font-weight:600;">ORIENTATION</div>
-                        <div style="font-size:9px; color:#64748b;">North ↑ Up</div>
+                        <div style="font-size:9px; color:#64748b;">North - Up</div>
                     </div>
                     <div class="compass" title="North is Up">
                         <!-- Cardinal directions -->
@@ -208,7 +208,7 @@
         <!-- Right Panel: KPI Statistics & Metrics Panel -->
         <div class="panel summary-panel">
             <div class="panel-header">
-                <span>📊 Analytics Panel Summary</span>
+                <span>Analytics Panel Summary</span>
             </div>
 
             <div class="summary-scroll" style="padding: 16px;">
@@ -263,11 +263,11 @@
     <div class="modal-overlay" id="historyModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="historyModalTitle">📋 Complete Historical Logs</h2>
+                <h2 id="historyModalTitle">Complete Historical Logs</h2>
                 <button onclick="closeHistoryModal()" class="modal-close-btn">&times;</button>
             </div>
             <div class="modal-body">
-                <h3>🕰️ Chronological Timeline (Newest Reports First)</h3>
+                <h3>Chronological Timeline (Newest Reports First)</h3>
                 <div id="historyLog"></div>
             </div>
         </div>
@@ -278,7 +278,7 @@
 
     <!-- IMPORT TOAST NOTIFICATION -->
     <div class="import-toast" id="importToast">
-        <div class="toast-title">✅ Spreadsheet Database Loaded</div>
+        <div class="toast-title">Spreadsheet Database Loaded</div>
         <span id="importToastMsg"></span>
     </div>
 

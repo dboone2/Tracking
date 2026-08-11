@@ -429,14 +429,17 @@ function drawVisualizationGrid() {
 
             const cleanStatusLabel = currentStatus ? currentStatus.replace('+', '').trim().toUpperCase() : '';
             
-            const statusClass = (currentStatus && !isGrayedOut) 
+            // Check if REP bays should be hidden
+            const isRepHidden = (cleanStatusLabel === 'REP' && hideRepMode);
+
+            const statusClass = (currentStatus && !isGrayedOut && !isRepHidden) 
                 ? `status-${cleanStatusLabel} status-${cleanStatusLabel.toLowerCase()}` 
                 : '';
-            const commentClass = (logs.length > 0 && !isGrayedOut) ? 'has-comments' : '';
-            const displayLabel = (currentStatus && !isGrayedOut) ? currentStatus : '';
+            const commentClass = (logs.length > 0 && !isGrayedOut && !isRepHidden) ? 'has-comments' : '';
+            const displayLabel = (currentStatus && !isGrayedOut && !isRepHidden) ? currentStatus : '';
 
             let inlineStyle = isGrayedOut ? 'opacity: 0.15; cursor: not-allowed;' : '';
-            if (currentStatus && !isGrayedOut) {
+            if (currentStatus && !isGrayedOut && !isRepHidden) {
                 if (cleanStatusLabel === 'S1') {
                     inlineStyle += ' background-color: #facc15 !important; color: #000000 !important;';
                 } else if (cleanStatusLabel === 'S2') {
@@ -565,6 +568,12 @@ function closeHistoryModal() {
 // =================================================================
 function toggleRepBays() {
     hideRepMode = !hideRepMode;
+    const btn = document.getElementById('toggleRepBtn');
+    if (btn) {
+        btn.innerText = hideRepMode ? 'Show Repaired (REP)' : 'Hide Repaired (REP)';
+        btn.classList.toggle('btn-orange', hideRepMode);
+        btn.classList.toggle('btn-slate', !hideRepMode);
+    }
     drawVisualizationGrid();
 }
 

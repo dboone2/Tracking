@@ -2,11 +2,11 @@
 // 1. DATA DICTIONARIES & CONSTANTS (3-Tier Active + Repaired)
 // =================================================================
 const statuses = [
-    { value:'S1',   label:'S1',   cssClass:'S1',   description:'Severity 1 â€” Water in Aisleway',  sub:'Water present in forklift traffic or pedestrian lanes.' },
-    { value:'S2',   label:'S2',   cssClass:'S2',   description:'Severity 2 â€” Water on Equipment', sub:'Water contacting production machinery, lines, or facility systems.' },
-    { value:'S3',   label:'S3',   cssClass:'S3',   description:'Severity 3 â€” Water on Electrical / Address Immediately', sub:'Immediate hazard. Water on power boxes, bus bars, control panels, or exposed wiring.' },
-    { value:'MECH', label:'MECH', cssClass:'MECH', description:'Mechanical â€” Mechanical Issue / Equipment Leak', sub:'Water leak related to mechanical systems, piping, HVAC, or equipment.' },
-    { value:'REP',  label:'REP',  cssClass:'REP',  description:'Repaired â€” Leak Resolved',          sub:'Roof leak repair is completed and signed off.' }
+    { value:'S1',   label:'S1',   cssClass:'S1',   description:'Severity 1 Ã¢â‚¬â€ Water in Aisleway',  sub:'Water present in forklift traffic or pedestrian lanes.' },
+    { value:'S2',   label:'S2',   cssClass:'S2',   description:'Severity 2 Ã¢â‚¬â€ Water on Equipment', sub:'Water contacting production machinery, lines, or facility systems.' },
+    { value:'S3',   label:'S3',   cssClass:'S3',   description:'Severity 3 Ã¢â‚¬â€ Water on Electrical / Address Immediately', sub:'Immediate hazard. Water on power boxes, bus bars, control panels, or exposed wiring.' },
+    { value:'MECH', label:'MECH', cssClass:'MECH', description:'Mechanical Ã¢â‚¬â€ Mechanical Issue / Equipment Leak', sub:'Water leak related to mechanical systems, piping, HVAC, or equipment.' },
+    { value:'REP',  label:'REP',  cssClass:'REP',  description:'Repaired Ã¢â‚¬â€ Leak Resolved',          sub:'Roof leak repair is completed and signed off.' }
 ];
 
 // Cleaned Rows: Removed 'A/B', 'B-C', 'CC', 'G-J', and 'JN'
@@ -332,7 +332,10 @@ function rebuildDynamicFilters() {
     if (!buildingContainer || !statusContainer) return;
 
     const selectedBuilding = document.querySelector('input[name="filterBuilding"]:checked')?.value || 'All';
-    const selectedStatus = document.querySelector('input[name="filterStatus"]:checked')?.value || 'All';
+    
+    // Multi-select status handling
+    const currentCheckedStatuses = Array.from(document.querySelectorAll('input[name="filterStatus"]:checked')).map(i => i.value);
+    const isInitialOrAll = currentCheckedStatuses.length === 0 || currentCheckedStatuses.includes('All');
 
     let buildingHtml = `
         <label class="radio-label">
@@ -352,9 +355,11 @@ function rebuildDynamicFilters() {
     });
     buildingContainer.innerHTML = buildingHtml;
 
+    const isChecked = (val) => isInitialOrAll || currentCheckedStatuses.includes(val);
+
     let statusHtml = `
         <label class="radio-label">
-            <input type="radio" name="filterStatus" value="All" ${selectedStatus === 'All' ? 'checked' : ''} onchange="applyFilters()">
+            <input type="checkbox" name="filterStatus" value="All" ${isChecked('All') ? 'checked' : ''} onchange="handleStatusFilterChange(this)">
             <span class="radio-text">All Statuses</span>
         </label>
     `;
@@ -362,7 +367,7 @@ function rebuildDynamicFilters() {
     statuses.forEach(s => {
         statusHtml += `
             <label class="radio-label">
-                <input type="radio" name="filterStatus" value="${s.value}" ${selectedStatus === s.value ? 'checked' : ''} onchange="applyFilters()">
+                <input type="checkbox" name="filterStatus" value="${s.value}" ${isChecked(s.value) ? 'checked' : ''} onchange="handleStatusFilterChange(this)">
                 <span class="radio-text"><span class="status-pill-text status-${s.value}">${s.label}</span></span>
             </label>
         `;
@@ -370,12 +375,31 @@ function rebuildDynamicFilters() {
 
     statusHtml += `
         <label class="radio-label">
-            <input type="radio" name="filterStatus" value="Unspecified" ${selectedStatus === 'Unspecified' ? 'checked' : ''} onchange="applyFilters()">
+            <input type="checkbox" name="filterStatus" value="Unspecified" ${isChecked('Unspecified') ? 'checked' : ''} onchange="handleStatusFilterChange(this)">
             <span class="radio-text">Empty Bays</span>
         </label>
     `;
 
     statusContainer.innerHTML = statusHtml;
+}
+
+function handleStatusFilterChange(changedInput) {
+    const allCheckbox = document.querySelector('input[name="filterStatus"][value="All"]');
+    const individualCheckboxes = Array.from(document.querySelectorAll('input[name="filterStatus"]:not([value="All"])'));
+
+    if (changedInput.value === 'All') {
+        const isChecked = changedInput.checked;
+        individualCheckboxes.forEach(cb => {
+            cb.checked = isChecked;
+        });
+    } else {
+        const allIndividualsChecked = individualCheckboxes.length > 0 && individualCheckboxes.every(cb => cb.checked);
+        if (allCheckbox) {
+            allCheckbox.checked = allIndividualsChecked;
+        }
+    }
+
+    applyFilters();
 }
 
 // =================================================================
@@ -392,7 +416,9 @@ function drawVisualizationGrid() {
     const table = document.getElementById('mainGrid');
     
     const selectedBuildingFilter = document.querySelector('input[name="filterBuilding"]:checked')?.value || 'All';
-    const selectedStatusFilter = document.querySelector('input[name="filterStatus"]:checked')?.value || 'All';
+    const checkedStatusElements = Array.from(document.querySelectorAll('input[name="filterStatus"]:checked'));
+    const selectedStatuses = new Set(checkedStatusElements.map(el => el.value));
+    const isAllStatusesSelected = selectedStatuses.has('All');
 
     let html = '';
 
@@ -419,27 +445,29 @@ function drawVisualizationGrid() {
                 }
             }
 
-            if (selectedStatusFilter !== 'All' && currentStatus) {
-                if (selectedStatusFilter === 'Unspecified' && currentStatus !== '') {
-                    isGrayedOut = true;
-                } else if (selectedStatusFilter !== 'Unspecified' && currentStatus.toLowerCase() !== selectedStatusFilter.toLowerCase()) {
-                    isGrayedOut = true;
+            if (!isAllStatusesSelected) {
+                const cleanLabel = currentStatus ? currentStatus.replace('+', '').trim().toUpperCase() : '';
+                if (currentStatus) {
+                    if (!selectedStatuses.has(cleanLabel)) {
+                        isGrayedOut = true;
+                    }
+                } else {
+                    if (!selectedStatuses.has('Unspecified')) {
+                        isGrayedOut = true;
+                    }
                 }
             }
 
             const cleanStatusLabel = currentStatus ? currentStatus.replace('+', '').trim().toUpperCase() : '';
             
-            // Check if REP bays should be hidden
-            const isRepHidden = (cleanStatusLabel === 'REP' && hideRepMode);
-
-            const statusClass = (currentStatus && !isGrayedOut && !isRepHidden) 
+            const statusClass = (currentStatus && !isGrayedOut) 
                 ? `status-${cleanStatusLabel} status-${cleanStatusLabel.toLowerCase()}` 
                 : '';
-            const commentClass = (logs.length > 0 && !isGrayedOut && !isRepHidden) ? 'has-comments' : '';
-            const displayLabel = (currentStatus && !isGrayedOut && !isRepHidden) ? currentStatus : '';
+            const commentClass = (logs.length > 0 && !isGrayedOut) ? 'has-comments' : '';
+            const displayLabel = (currentStatus && !isGrayedOut) ? currentStatus : '';
 
             let inlineStyle = isGrayedOut ? 'opacity: 0.15; cursor: not-allowed;' : '';
-            if (currentStatus && !isGrayedOut && !isRepHidden) {
+            if (currentStatus && !isGrayedOut) {
                 if (cleanStatusLabel === 'S1') {
                     inlineStyle += ' background-color: #facc15 !important; color: #000000 !important;';
                 } else if (cleanStatusLabel === 'S2') {
@@ -529,7 +557,7 @@ function viewBayHistoryModal(key) {
     const logs = bayHistory[key] || [];
     const modal = document.getElementById('historyModal');
     
-    document.getElementById('historyModalTitle').innerText = `ðŸ“‹ Complete Historical Logs for Bay ${key}`;
+    document.getElementById('historyModalTitle').innerText = `Ã°Å¸â€œâ€¹ Complete Historical Logs for Bay ${key}`;
     const container = document.getElementById('historyLog');
 
     if (logs.length === 0) {
@@ -568,12 +596,6 @@ function closeHistoryModal() {
 // =================================================================
 function toggleRepBays() {
     hideRepMode = !hideRepMode;
-    const btn = document.getElementById('toggleRepBtn');
-    if (btn) {
-        btn.innerText = hideRepMode ? 'Show Repaired (REP)' : 'Hide Repaired (REP)';
-        btn.classList.toggle('btn-orange', hideRepMode);
-        btn.classList.toggle('btn-slate', !hideRepMode);
-    }
     drawVisualizationGrid();
 }
 
@@ -587,7 +609,7 @@ function toggleSummary() {
         panel.classList.toggle('collapsed');
         if (btn) {
             const isCollapsed = panel.classList.contains('collapsed');
-            btn.innerText = isCollapsed ? 'â–¶' : 'â—€';
+            btn.innerText = isCollapsed ? 'Ã¢â€“Â¶' : 'Ã¢â€”â‚¬';
             btn.title = isCollapsed ? 'Expand Summary Panel' : 'Collapse Summary Panel';
         }
     }
@@ -617,7 +639,7 @@ function setupTooltipHoverEngine() {
         const latest = logs[logs.length - 1];
         tooltip.innerHTML = `
             <strong>${key}</strong><br>
-            ${latest.building} â€” ${latest.date}<br>
+            ${latest.building} Ã¢â‚¬â€ ${latest.date}<br>
             ${latest.notes || ''}
         `;
         tooltip.style.display = 'block';

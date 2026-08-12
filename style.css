@@ -211,7 +211,8 @@ body {
 }
 
 /* Hide native browser radio buttons for a custom pill toggle experience */
-.radio-label input[type="radio"] {
+.radio-label input[type="radio"],
+.radio-label input[type="checkbox"] {
     position: absolute;
     opacity: 0;
     width: 0;
@@ -245,14 +246,14 @@ body {
 
 /* --- ACTIVE/CHECKED PILL STATES USING CSS :HAS --- */
 /* Standard Checked Style (for Buildings, All Statuses) */
-.radio-label:has(input[type="radio"]:checked) {
+.radio-label:has(input:checked) {
     background: #0288d1;
     border-color: #03a9f4;
     color: #ffffff;
     box-shadow: 0 0 10px rgba(2, 136, 209, 0.45);
 }
 
-.radio-label:has(input[type="radio"]:checked) .radio-text {
+.radio-label:has(input:checked) .radio-text {
     color: #ffffff;
 }
 
@@ -775,7 +776,7 @@ tfoot .grand-row .count-cell {
 }
 
 /* =================================================================
-   ðŸ› ï¸ ADVANCED PRINT MEDIA ENGINE (STRETCHED LANDSCAPE LAYOUT)
+   Ã°Å¸â€º Ã¯Â¸Â ADVANCED PRINT MEDIA ENGINE (STRETCHED LANDSCAPE LAYOUT)
    ================================================================= */
 @media print {
     @page {
